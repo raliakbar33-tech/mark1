@@ -338,9 +338,21 @@ function showPhoto() {
 }
 
 
-// Not Kartları - Döndürme Animasyonu
+// Not Kartları - Döndürme Animasyonu (6 kart)
 let isFlipping = false;
-let cardOrder = [0, 1, 2]; // Kart sırası
+let cardOrder = [0, 1, 2, 3, 4, 5]; // Kart sırası
+
+function getCardTransform(position) {
+    const positions = [
+        'translateY(0) rotateY(0deg) scale(1)',
+        'translateY(6px) rotateY(1.5deg) scale(0.99)',
+        'translateY(12px) rotateY(3deg) scale(0.98)',
+        'translateY(18px) rotateY(4.5deg) scale(0.97)',
+        'translateY(24px) rotateY(6deg) scale(0.96)',
+        'translateY(30px) rotateY(7.5deg) scale(0.95)'
+    ];
+    return positions[position] || positions[5];
+}
 
 function getTopCardIndex() {
     return cardOrder[0];
@@ -364,17 +376,9 @@ function flipCard(card) {
     noteCards.forEach((c) => {
         const cIndex = parseInt(c.dataset.index);
         const position = cardOrder.indexOf(cIndex);
-        
-        if (position === 0) {
-            c.style.zIndex = '3';
-            c.style.pointerEvents = 'auto';
-        } else if (position === 1) {
-            c.style.zIndex = '2';
-            c.style.pointerEvents = 'none';
-        } else {
-            c.style.zIndex = '1';
-            c.style.pointerEvents = 'none';
-        }
+        const z = 6 - position;
+        c.style.zIndex = String(z);
+        c.style.pointerEvents = position === 0 ? 'auto' : 'none';
     });
     
     // Dönen kartı başlat
@@ -386,29 +390,16 @@ function flipCard(card) {
         noteCards.forEach((c) => {
             const cIndex = parseInt(c.dataset.index);
             const position = cardOrder.indexOf(cIndex);
-            
-            if (position === 0) {
-                // En öne gel
-                c.style.transform = 'translateY(0) rotateY(0deg) scale(1)';
-                c.style.opacity = '1';
-            } else if (position === 1) {
-                // Ortada
-                c.style.transform = 'translateY(8px) rotateY(2deg) scale(0.98)';
-                c.style.opacity = '1';
-            } else {
-                // En arkada
-                c.style.transform = 'translateY(16px) rotateY(4deg) scale(0.96)';
-                c.style.opacity = '1';
-            }
+            c.style.transform = getCardTransform(position);
+            c.style.opacity = '1';
         });
-    }, 300); // Animasyonun yarısında (600ms / 2)
+    }, 300);
     
-    // Animasyon bitince dönen kartı sıfırla
+    // Animasyon bitince dönen kartı sıfırla (en arkaya)
     setTimeout(() => {
         card.classList.remove('flipping');
-        card.style.transform = 'translateY(16px) rotateY(4deg) scale(0.96)';
+        card.style.transform = getCardTransform(5);
         card.style.opacity = '1';
-        
         isFlipping = false;
     }, 600);
 }
@@ -428,27 +419,15 @@ window.addEventListener('load', () => {
     // Fotoğrafı önceden yükle (görünür ama kağıt altında)
     preloadPhoto();
     
-    // Kartların başlangıç pozisyonlarını ayarla
+    // Kartların başlangıç pozisyonlarını ayarla (6 kart)
     noteCards.forEach((card) => {
         const cardIndex = parseInt(card.dataset.index);
         const position = cardOrder.indexOf(cardIndex);
-        
-        if (position === 0) {
-            card.style.zIndex = '3';
-            card.style.transform = 'translateY(0) rotateY(0deg) scale(1)';
-            card.style.opacity = '1';
-            card.style.pointerEvents = 'auto';
-        } else if (position === 1) {
-            card.style.zIndex = '2';
-            card.style.transform = 'translateY(8px) rotateY(2deg) scale(0.98)';
-            card.style.opacity = '1';
-            card.style.pointerEvents = 'none';
-        } else {
-            card.style.zIndex = '1';
-            card.style.transform = 'translateY(16px) rotateY(4deg) scale(0.96)';
-            card.style.opacity = '1';
-            card.style.pointerEvents = 'none';
-        }
+        const z = 6 - position;
+        card.style.zIndex = String(z);
+        card.style.transform = getCardTransform(position);
+        card.style.opacity = '1';
+        card.style.pointerEvents = position === 0 ? 'auto' : 'none';
     });
     
     // Fotoğraf yolunu kontrol et
