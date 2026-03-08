@@ -717,16 +717,12 @@ body {
     .notes-container {
         right: 20px;
         transform: translateY(-50%) scale(0.85);
-    }
-    
-    .notes-container {
-        right: 20px;
-        transform: translateY(-50%) scale(0.85);
+        height: 220px;
     }
     
     .note-card {
         width: 140px;
-        height: 175px;
+        height: 140px;
     }
     
     .note-content {
@@ -744,7 +740,7 @@ body {
     z-index: 30;
     perspective: 2000px;
     width: 160px;
-    height: 200px;
+    height: 260px;
 }
 
 .note-card {
@@ -776,7 +772,22 @@ body {
 
 .note-card[data-index="2"] {
     z-index: 1;
-    transform: translateY(16px) rotateY(4deg) scale(0.96);
+    transform: translateY(12px) rotateY(3deg) scale(0.98);
+}
+
+.note-card[data-index="3"] {
+    z-index: 1;
+    transform: translateY(18px) rotateY(4.5deg) scale(0.97);
+}
+
+.note-card[data-index="4"] {
+    z-index: 1;
+    transform: translateY(24px) rotateY(6deg) scale(0.96);
+}
+
+.note-card[data-index="5"] {
+    z-index: 1;
+    transform: translateY(30px) rotateY(7.5deg) scale(0.95);
 }
 
 .note-card.flipping {
